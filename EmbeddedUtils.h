@@ -1,8 +1,8 @@
 #pragma once
 
-#include "lib/Debug/Debug.h"
-#include "lib/Calculus/Calculus.h"
-#include "lib/Convert/Convert.h"
-#include "lib/Filters/Filters.h"
-#include "lib/MatrixFunc/MatrixFunc.h"
-#include "lib/Vec/Vec.h"
+#include "lib/Debug.h"
+#include "lib/Calculus.h"
+#include "lib/Convert.h"
+#include "lib/Filters.h"
+#include "lib/MatrixFunc.h"
+#include "lib/Vec.h"
