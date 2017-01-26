@@ -1,7 +1,7 @@
 #pragma once
 
 // C(m x l) = A(m × n) x B(n × l)
-static void MultiMatrix( const float *A, const float *B, const int& m, const int& n, const int& l, float *C )
+static void MultiMatrix( const float * const A, const float * const B, int m, int n, int l, float * const C )
 {
     int i, j, k;
 
@@ -17,7 +17,7 @@ static void MultiMatrix( const float *A, const float *B, const int& m, const int
 
 
 // cross product : X(3 x 1) = A(3×1) [cross] B(3×1)
-void CrossMatrix( float A[3], float B[3], float X[3] )
+static void CrossMatrix( const float (&A)[3], const float (&B)[3], float (&X)[3] )
 {
     X[0] = A[1]*B[2] - A[2]*B[1];
     X[1] = A[2]*B[0] - A[0]*B[2];
@@ -26,7 +26,7 @@ void CrossMatrix( float A[3], float B[3], float X[3] )
 
 
 // transpose : A(m × n)
-void TransMatrix( float *A, int m, int n, float *A_trans )
+static void TransMatrix( const float * const A, int m, int n, float * const A_trans )
 {
     int i,j;
     for( i=0; i<m; i++ ){
@@ -36,9 +36,8 @@ void TransMatrix( float *A, int m, int n, float *A_trans )
     }
 }
 
-
 // inverse : A (n x n)
-void InvMatrix( float *A, int n, float *A_inv )
+static void InvMatrix( const float * const A, int n, float * const A_inv )
 {
     int i, j, k;
     float L[n][n], U[n][n], buf[n][n];
@@ -86,7 +85,7 @@ void InvMatrix( float *A, int n, float *A_inv )
 
 
 // pseudo inverse : A (m x n)
-void PInvMatrix( float *A, int m, int n, float *A_pseudo )
+static void PInvMatrix( const float * const A, int m, int n, float * const A_pseudo )
 {
     int k;
     if( m < n ) k = m;
@@ -107,7 +106,7 @@ void PInvMatrix( float *A, int m, int n, float *A_pseudo )
 
 
 // weighted pseudo inverse : A(m x n) & W(n x l)
-void WPInvMatrix( float *A, float *W, int m, int n, int l, float *A_wp )
+static void WPInvMatrix( const float * const A, const float * const W, int m, int n, int l, float * const A_wp )
 {
     float A_trans[n][m], W_inv[l][l];
     float AW[m][l], AWA[m][m], AWA_inv[m][m], WA[l][m];
