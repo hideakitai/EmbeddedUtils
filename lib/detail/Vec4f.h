@@ -8,13 +8,18 @@ class Vec3f;
 class Vec4f {
 public:
     /// \cond INTERNAL
-    static const int DIM = 4;
+    static constexpr int DIM = 4;
     /// \endcond
 
-	float x;
-	float y;
-	float z;
-	float w;
+    union {
+    	float data[4];
+    	struct {
+			float x;
+			float y;
+			float z;
+			float w;
+		};
+	};
 
 	//---------------------
 	/// \name Construct a 4D vector
@@ -22,7 +27,7 @@ public:
 
 	Vec4f();
 	explicit Vec4f( float _scalar );
-	Vec4f( float _x, float _y, float _z, float _w );
+	Vec4f( float _x, float _y, float _z = 0.0f, float _w = 0.0f );
 	Vec4f( const Vec2f& vec);
 	Vec4f( const Vec3f& vec);
 
@@ -34,22 +39,22 @@ public:
 
 
 	float * getPtr() {
-		return (float*)&x;
+		return data;
 	}
 	const float * getPtr() const {
-		return (const float *)&x;
+		return data;
 	}
 
-	float& operator[]( int n ){
-		return getPtr()[n];
+	float& operator[]( std::size_t n ){
+		return data[n];
 	}
 
-	float operator[]( int n ) const {
-		return getPtr()[n];
+	float operator[]( std::size_t n ) const {
+		return data[n];
 	}
 
 	void set( float _scalar );
-    void set( float _x, float _y, float _z, float _w );
+    void set( float _x, float _y, float _z = 0.0f, float _w = 0.0f );
     void set( const Vec4f& vec );
 
 
