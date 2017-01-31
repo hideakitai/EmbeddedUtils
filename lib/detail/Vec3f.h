@@ -1,11 +1,14 @@
 #pragma once
 
 #include <cstddef>
-#include "Vec2f.h"
-#include "Vec4f.h"
+#include <cmath>
+#include "Macro.h"
+
+class Vec2f;
+class Vec4f;
+
 // #include "ofConstants.h"
 
-#include <cmath>
 // #include <iostream>
 
 /// \brief  Vec3f is a class for storing a three dimensional vector.
@@ -1066,8 +1069,6 @@ Vec3f operator/( float f, const Vec3f& vec );
 /////////////////
 
 
-inline Vec3f::Vec3f( const Vec2f& vec ):x(vec.x), y(vec.y), z(0) {}
-inline Vec3f::Vec3f( const Vec4f& vec ):x(vec.x), y(vec.y), z(vec.z) {}
 inline Vec3f::Vec3f(): x(0), y(0), z(0) {}
 inline Vec3f::Vec3f( float _all ): x(_all), y(_all), z(_all) {}
 inline Vec3f::Vec3f( float _x, float _y, float _z ):x(_x), y(_y), z(_z) {}
@@ -1107,9 +1108,9 @@ inline bool Vec3f::operator!=( const Vec3f& vec ) const {
 }
 
 inline bool Vec3f::match( const Vec3f& vec, float tolerance ) const{
-	return (fabs(x - vec.x) < tolerance)
-	&& (fabs(y - vec.y) < tolerance)
-	&& (fabs(z - vec.z) < tolerance);
+	return (std::fabs(x - vec.x) < tolerance)
+	&& (std::fabs(y - vec.y) < tolerance)
+	&& (std::fabs(z - vec.z) < tolerance);
 }
 
 /**
@@ -1264,7 +1265,7 @@ inline Vec3f& Vec3f::operator/=( const float f ) {
 // 	return getScaled(length);
 // }
 inline Vec3f Vec3f::getScaled( const float length ) const {
-	float l = (float)sqrt(x*x + y*y + z*z);
+	float l = std::sqrt(x*x + y*y + z*z);
 	if( l > 0 )
 		return Vec3f( (x/l)*length, (y/l)*length, (z/l)*length );
 	else
@@ -1274,7 +1275,7 @@ inline Vec3f Vec3f::getScaled( const float length ) const {
 // 	return scale(length);
 // }
 inline Vec3f& Vec3f::scale( const float length ) {
-	float l = (float)sqrt(x*x + y*y + z*z);
+	float l = std::sqrt(x*x + y*y + z*z);
 	if (l > 0) {
 		x = (x/l)*length;
 		y = (y/l)*length;
@@ -1609,10 +1610,7 @@ inline Vec3f& Vec3f::map( const Vec3f& origin,
 //
 //
 inline float Vec3f::distance( const Vec3f& pnt) const {
-	float vx = x-pnt.x;
-	float vy = y-pnt.y;
-	float vz = z-pnt.z;
-	return (float)sqrt(vx*vx + vy*vy + vz*vz);
+	return std::sqrt(squareDistance());
 }
 
 // inline float  Vec3f::distanceSquared( const Vec3f& pnt ) const{
@@ -1699,7 +1697,7 @@ inline Vec3f& Vec3f::average( const Vec3f* points, int num ) {
 // }
 
 inline Vec3f Vec3f::getNormalized() const {
-	float length = (float)sqrt(x*x + y*y + z*z);
+	float length = std::sqrt(x*x + y*y + z*z);
 	if( length > 0 ) {
 		return Vec3f( x/length, y/length, z/length );
 	} else {
@@ -1708,7 +1706,7 @@ inline Vec3f Vec3f::getNormalized() const {
 }
 
 inline Vec3f& Vec3f::normalize() {
-	float length = (float)sqrt(x*x + y*y + z*z);
+	float length = std::sqrt(x*x + y*y + z*z);
 	if( length > 0 ) {
 		x /= length;
 		y /= length;
@@ -1731,7 +1729,7 @@ inline Vec3f Vec3f::getLimited(float max) const {
     Vec3f limited;
     float lengthSquared = (x*x + y*y + z*z);
     if( lengthSquared > max*max && lengthSquared > 0 ) {
-        float ratio = max/(float)sqrt(lengthSquared);
+        float ratio = max/std::sqrt(lengthSquared);
         limited.set( x*ratio, y*ratio, z*ratio);
     } else {
         limited.set(x,y,z);
@@ -1742,7 +1740,7 @@ inline Vec3f Vec3f::getLimited(float max) const {
 inline Vec3f& Vec3f::limit(float max) {
     float lengthSquared = (x*x + y*y + z*z);
     if( lengthSquared > max*max && lengthSquared > 0 ) {
-        float ratio = max/(float)sqrt(lengthSquared);
+        float ratio = max/std::sqrt(lengthSquared);
         x *= ratio;
         y *= ratio;
         z *= ratio;
@@ -1784,9 +1782,9 @@ inline Vec3f Vec3f::getPerpendicular( const Vec3f& vec ) const {
 	float crossY = z*vec.x - x*vec.z;
 	float crossZ = x*vec.y - y*vec.x;
 
-	float length = (float)sqrt(crossX*crossX +
-							   crossY*crossY +
-							   crossZ*crossZ);
+	float length = std::sqrt(crossX*crossX +
+							 crossY*crossY +
+							 crossZ*crossZ);
 
 	if( length > 0 )
 		return Vec3f( crossX/length, crossY/length, crossZ/length );
@@ -1799,9 +1797,9 @@ inline Vec3f& Vec3f::perpendicular( const Vec3f& vec ) {
 	float crossY = z*vec.x - x*vec.z;
 	float crossZ = x*vec.y - y*vec.x;
 
-	float length = (float)sqrt(crossX*crossX +
-							   crossY*crossY +
-							   crossZ*crossZ);
+	float length = std::sqrt(crossX*crossX +
+							 crossY*crossY +
+							 crossZ*crossZ);
 
 	if( length > 0 ) {
 		x = crossX/length;
@@ -1821,11 +1819,11 @@ inline Vec3f& Vec3f::perpendicular( const Vec3f& vec ) {
 //
 //
 inline float Vec3f::length() const {
-	return (float)sqrt( x*x + y*y + z*z );
+	return std::sqrt(lengthSquared());
 }
 
 inline float Vec3f::lengthSquared() const {
-	return (float)(x*x + y*y + z*z);
+	return (x*x + y*y + z*z);
 }
 
 
@@ -1838,13 +1836,13 @@ inline float Vec3f::lengthSquared() const {
 inline float Vec3f::angle( const Vec3f& vec ) const {
 	Vec3f n1 = this->getNormalized();
 	Vec3f n2 = vec.getNormalized();
-	return (float)(acos( n1.dot(n2) )*RAD_TO_DEG);
+	return std::acos( n1.dot(n2) )*RAD_TO_DEG;
 }
 
 inline float Vec3f::angleRad( const Vec3f& vec ) const {
 	Vec3f n1 = this->getNormalized();
 	Vec3f n2 = vec.getNormalized();
-	return (float)acos( n1.dot(n2) );
+	return std::acos( n1.dot(n2) );
 }
 
 
