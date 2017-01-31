@@ -116,15 +116,19 @@ using namespace std;
 class Vec2f {
 public:
 	/// \cond INTERNAL
-	static const int DIM = 2;
+	static constexpr int DIM = 2;
 	//// \endcond
 
-	/// \brief Stores the `x` component of the vector.
-	float x;
+	union {
+		float data[2];
+		struct {
+			/// \brief Stores the `x` component of the vector.
+			float x;
 
-	/// \brief Stores the `y` component of the vector.
-	float y;
-
+			/// \brief Stores the `y` component of the vector.
+			float y;
+		};
+	};
     //---------------------
 	/// \name Construct a 2D vector
 	/// \{
@@ -195,11 +199,11 @@ public:
 	/// information, as it allows the vector to be treated as a simple C array of
 	/// floats that can be passed verbatim to OpenGL.
 	float * getPtr() {
-		return (float*)&x;
+		return data;
 	}
 
 	const float * getPtr() const {
-		return (const float *)&x;
+		return data;
 	}
 
 	/// \brief Allows to access the x and y components of an Vec2f as though it is an array
@@ -212,12 +216,12 @@ public:
 	///
 	/// This function can be handy if you want to do the same operation to both x and
 	/// y components, as it means you can just make a for loop that repeats twice.
-	float& operator[]( int n ){
-		return getPtr()[n];
+	float& operator[]( std::size_t n ){
+		return data[n];
 	}
 
-	float operator[]( int n ) const {
-		return getPtr()[n];
+	float operator[]( std::size_t n ) const {
+		return data[n];
 	}
 
 

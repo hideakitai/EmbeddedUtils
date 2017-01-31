@@ -79,18 +79,22 @@
 class Vec3f {
 public:
    	/// \cond INTERNAL
-	static const int DIM = 3;
+	static constexpr int DIM = 3;
 	/// \endcond
 
-	/// \brief Stores the `X` component of this vector.
-	float x;
+	union {
+		float data[3];
+		struct {
+			/// \brief Stores the `X` component of this vector.
+			float x;
 
-	/// \brief Stores the `Y` component of this vector.
-	float y;
+			/// \brief Stores the `Y` component of this vector.
+			float y;
 
-	/// \brief Stores the `Z` component of this vector.
-	float z;
-
+			/// \brief Stores the `Z` component of this vector.
+			float z;
+		};
+	};
 	//---------------------
 	/// \name Construct a 3D vector
 	/// \{
@@ -110,7 +114,7 @@ public:
 	Vec3f();
 
 	/// \brief Construt a 3D vector with `x`, `y` and `z` specified
-	Vec3f( float x, float y, float z=0 );
+	Vec3f( float x, float y, float z=0.0f );
 
 	/// \brief Construct a 3D vector with `x`, `y` and `z` set to `scalar`
 	explicit Vec3f( float scalar );
@@ -149,10 +153,10 @@ public:
 	/// 'float's that can be passed verbatim to OpenGL.
 	///
 	float * getPtr() {
-		return (float*)&x;
+		return data;
 	}
 	const float * getPtr() const {
-		return (const float *)&x;
+		return data;
 	}
 
 
@@ -169,12 +173,12 @@ public:
 	/// This function can be handy if you want to do the same operation to all 'x',
 	/// 'y' and 'z' components, as it means you can just make a 'for' loop that
 	/// repeats 3 times.
-	float& operator[]( int n ){
-		return getPtr()[n];
+	float& operator[]( std::size_t n ){
+		return data[n];
 	}
 
-	float operator[]( int n ) const {
-		return getPtr()[n];
+	float operator[]( std::size_t n ) const {
+		return data[n];
 	}
 
 
