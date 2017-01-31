@@ -9,7 +9,7 @@ namespace Filter
     public:
         LPF(float gain) : gain_(gain), buffer_(0.0) {}
 
-        inline T get(const T& curr_val, const float& dt)
+        inline T get(const T& curr_val, float dt)
         {
             T new_val = curr_val;
             new_val += (new_val - buffer_) * gain_ * (double)dt;
@@ -33,7 +33,7 @@ namespace Filter
     {
         HPF(float gain) : gain_(gain), buffer_(0.0) {}
 
-        inline T get(const T& curr_val, const float& dt)
+        inline T get(const T& curr_val, float dt)
         {
             T new_val = curr_val - buffer_;
             buffer_ += new_val * gain_ * dt;
