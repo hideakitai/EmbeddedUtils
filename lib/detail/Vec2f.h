@@ -1,56 +1,11 @@
 #pragma once
 
 #include <cstddef>
-#include <math.h>
+#include <cmath>
+#include "Macro.h"
+
 class Vec3f;
 class Vec4f;
-
-using namespace std;
-
-#ifndef PI
-   #define PI       3.14159265358979323846
-#endif
-
-#ifndef TWO_PI
-   #define TWO_PI   6.28318530717958647693
-#endif
-
-#ifndef M_TWO_PI
-   #define M_TWO_PI   6.28318530717958647693
-#endif
-
-#ifndef FOUR_PI
-   #define FOUR_PI 12.56637061435917295385
-#endif
-
-#ifndef HALF_PI
-   #define HALF_PI  1.57079632679489661923
-#endif
-
-#ifndef DEG_TO_RAD
-   #define DEG_TO_RAD (PI/180.0)
-#endif
-
-#ifndef RAD_TO_DEG
-   #define RAD_TO_DEG (180.0/PI)
-#endif
-
-#ifndef MIN
-   #define MIN(x,y) (((x) < (y)) ? (x) : (y))
-#endif
-
-#ifndef MAX
-   #define MAX(x,y) (((x) > (y)) ? (x) : (y))
-#endif
-
-#ifndef CLAMP
-   #define CLAMP(val,min,max) ((val) < (min) ? (min) : ((val > max) ? (max) : (val)))
-#endif
-
-#ifndef ABS
-   #define ABS(x) (((x) < 0) ? -(x) : (x))
-#endif
-
 
 // #include "ofConstants.h"
 
@@ -1077,8 +1032,8 @@ inline bool Vec2f::operator!=( const Vec2f& vec ) const {
 }
 
 inline bool Vec2f::match( const Vec2f& vec, float tolerance ) const {
-	return (fabs(x - vec.x) < tolerance)
-	&& (fabs(y - vec.y) < tolerance);
+	return (std::fabs(x - vec.x) < tolerance)
+	&& (std::fabs(y - vec.y) < tolerance);
 }
 
 //
@@ -1086,14 +1041,14 @@ inline bool Vec2f::match( const Vec2f& vec, float tolerance ) const {
 // Tolerance is specified in degree.
 
 inline bool Vec2f::isAligned( const Vec2f& vec, float tolerance ) const {
-	return  fabs( this->angle( vec ) ) < tolerance;
+	return  std::fabs( this->angle( vec ) ) < tolerance;
 }
 inline bool Vec2f::align( const Vec2f& vec, float tolerance ) const {
     return isAligned( vec, tolerance );
 }
 
 inline bool Vec2f::isAlignedRad( const Vec2f& vec, float tolerance ) const {
-	return  fabs( this->angleRad( vec ) ) < tolerance;
+	return  std::fabs( this->angleRad( vec ) ) < tolerance;
 }
 inline bool Vec2f::alignRad( const Vec2f& vec, float tolerance ) const {
     return isAlignedRad( vec, tolerance );
@@ -1217,7 +1172,7 @@ inline Vec2f& Vec2f::operator/=( const float f ) {
 // }
 
 inline Vec2f Vec2f::getScaled( const float length ) const {
-	float l = (float)sqrt(x*x + y*y);
+	float l = std::sqrt(x*x + y*y);
 	if( l > 0 )
 		return Vec2f( (x/l)*length, (y/l)*length );
 	else
@@ -1229,7 +1184,7 @@ inline Vec2f Vec2f::getScaled( const float length ) const {
 // }
 
 inline Vec2f& Vec2f::scale( const float length ) {
-	float l = (float)sqrt(x*x + y*y);
+	float l = std::sqrt(x*x + y*y);
 	if (l > 0) {
 		x = (x/l)*length;
 		y = (y/l)*length;
@@ -1348,9 +1303,7 @@ inline Vec2f& Vec2f::map( const Vec2f& origin,
 //
 //
 inline float Vec2f::distance( const Vec2f& pnt) const {
-	float vx = x-pnt.x;
-	float vy = y-pnt.y;
-	return (float)sqrt(vx*vx + vy*vy);
+	return std::sqrt(squareDistance());
 }
 
 //this method is deprecated in 006 please use squareDistance
@@ -1433,7 +1386,7 @@ inline Vec2f& Vec2f::average( const Vec2f* points, std::size_t num ) {
 // }
 
 inline Vec2f Vec2f::getNormalized() const {
-	float length = (float)sqrt(x*x + y*y);
+	float length = std::sqrt(x*x + y*y);
 	if( length > 0 ) {
 		return Vec2f( x/length, y/length );
 	} else {
@@ -1442,7 +1395,7 @@ inline Vec2f Vec2f::getNormalized() const {
 }
 
 inline Vec2f& Vec2f::normalize() {
-	float length = (float)sqrt(x*x + y*y);
+	float length = std::sqrt(x*x + y*y);
 	if( length > 0 ) {
 		x /= length;
 		y /= length;
@@ -1463,7 +1416,7 @@ inline Vec2f Vec2f::getLimited(float max) const {
     Vec2f limited;
     float lengthSquared = (x*x + y*y);
     if( lengthSquared > max*max && lengthSquared > 0 ) {
-        float ratio = max/(float)sqrt(lengthSquared);
+        float ratio = max/std::sqrt(lengthSquared);
         limited.set( x*ratio, y*ratio);
     } else {
         limited.set(x,y);
@@ -1474,7 +1427,7 @@ inline Vec2f Vec2f::getLimited(float max) const {
 inline Vec2f& Vec2f::limit(float max) {
     float lengthSquared = (x*x + y*y);
     if( lengthSquared > max*max && lengthSquared > 0 ) {
-        float ratio = max/(float)sqrt(lengthSquared);
+        float ratio = max/std::sqrt(lengthSquared);
         x *= ratio;
         y *= ratio;
     }
@@ -1491,7 +1444,7 @@ inline Vec2f& Vec2f::limit(float max) {
 // }
 
 inline Vec2f Vec2f::getPerpendicular() const {
-	float length = (float)sqrt( x*x + y*y );
+	float length = std::sqrt( x*x + y*y );
 	if( length > 0 )
 		return Vec2f( -(y/length), x/length );
 	else
@@ -1499,7 +1452,7 @@ inline Vec2f Vec2f::getPerpendicular() const {
 }
 
 inline Vec2f& Vec2f::perpendicular() {
-	float length = (float)sqrt( x*x + y*y );
+	float length = std::sqrt( x*x + y*y );
 	if( length > 0 ) {
 		float _x = x;
 		x = -(y/length);
@@ -1513,20 +1466,20 @@ inline Vec2f& Vec2f::perpendicular() {
 //
 //
 inline float Vec2f::length() const {
-	return (float)sqrt( x*x + y*y );
+	return std::sqrt( x*x + y*y );
 }
 
 inline float Vec2f::lengthSquared() const {
-	return (float)(x*x + y*y);
+	return x*x + y*y;
 }
 
 
 inline float Vec2f::angle( const Vec2f& vec ) const {
-	return (float)(atan2( x*vec.y-y*vec.x, x*vec.x + y*vec.y )*RAD_TO_DEG);
+	return std::atan2( x*vec.y-y*vec.x, x*vec.x + y*vec.y )*RAD_TO_DEG;
 }
 
 inline float Vec2f::angleRad( const Vec2f& vec ) const {
-	return atan2( x*vec.y-y*vec.x, x*vec.x + y*vec.y );
+	return std::atan2( x*vec.y-y*vec.x, x*vec.x + y*vec.y );
 }
 
 
