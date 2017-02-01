@@ -9,7 +9,7 @@ namespace Calculus
     public:
         Differential(T gain) : gain_(gain) { reset(); }
 
-        inline T get(const T& integral, const float& dt)
+        inline T get(const T& integral, float dt)
         {
             T newVal;
             newVal  = gain_ * integral - buffer_;
@@ -18,7 +18,7 @@ namespace Calculus
         }
 
         inline void reset() { buffer_ = T::zero(); }
-        inline void setGain(const T& gain) { gain_ = gain; }
+        inline void setGain(T gain) { gain_ = gain; }
 
     private:
         T gain_;
@@ -34,7 +34,7 @@ namespace Calculus
     public:
         Integral() { reset(); }
 
-        inline const T& get(const T& differential, const float& dt)
+        inline const T& get(const T& differential, float dt)
         {
             buffer_ += differential * dt;
             return buffer_;
