@@ -1303,7 +1303,7 @@ inline Vec2f& Vec2f::map( const Vec2f& origin,
 //
 //
 inline float Vec2f::distance( const Vec2f& pnt) const {
-	return std::sqrt(squareDistance());
+	return std::sqrt(squareDistance(pnt));
 }
 
 //this method is deprecated in 006 please use squareDistance

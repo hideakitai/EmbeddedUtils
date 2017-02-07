@@ -1610,7 +1610,7 @@ inline Vec3f& Vec3f::map( const Vec3f& origin,
 //
 //
 inline float Vec3f::distance( const Vec3f& pnt) const {
-	return std::sqrt(squareDistance());
+	return std::sqrt(squareDistance(pnt));
 }
 
 // inline float  Vec3f::distanceSquared( const Vec3f& pnt ) const{
