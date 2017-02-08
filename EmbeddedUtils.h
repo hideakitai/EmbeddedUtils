@@ -6,3 +6,4 @@
 #include "lib/Filters.h"
 #include "lib/MatrixFunc.h"
 #include "lib/Vec.h"
+#include "lib/gamma.h"
