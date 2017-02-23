@@ -7,3 +7,4 @@
 #include "lib/MatrixFunc.h"
 #include "lib/RingQueue.h"
 #include "lib/Vec.h"
+#include "lib/gamma.h"
