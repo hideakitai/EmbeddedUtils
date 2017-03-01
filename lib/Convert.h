@@ -5,20 +5,16 @@ namespace Convert
 {
     const char* fromString(const String& value) { return value.c_str(); }
 
-    String toHex(const String& value)
+    template <typename T, typename std::enable_if<std::is_integral<typename std::remove_reference<T>::type>::value>::type* = nullptr>
+    String toHex(const T& value)
     {
-        size_t numBytes = value.length();
-        String out("");
-        for (size_t i = 0; i < numBytes; ++i)
-        {
-            char c[] = {0};
-            sprintf(c, "%02X", value.charAt(i));
-            out += String(c);
-        }
-        return out;
-    }
+        size_t size = sizeof(T) * 2;
+        String format = "%0" + String(size) + "X";
+        char hex[size + 1];
 
-    String toHex(const char* value) { return toHex(String(value)); }
+        sprintf(hex, format.c_str(), value);
+        return String(hex);
+    }
 
     int toInt(const String& intString) { return intString.toInt(); }
 
