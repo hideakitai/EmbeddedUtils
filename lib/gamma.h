@@ -19,9 +19,16 @@ void makeGamma(float gamma ,std::array<type ,size> & gammaArray){
 }
 
 template <typename type , std::size_t size>
-void makeGammaWithRange(float gamma ,type InputMax ,type OutputMax ,std::array<type ,size> & gammaArray){
+void makeGammaWithRangeAll(float gamma ,type InputMax ,type OutputMax ,std::array<type ,size> & gammaArray){
     for(int i = 0 ; i < gammaArray.size() ; ++i){
         gammaArray[i] = (type) (std::pow( (float) i / (float)InputMax , gamma) * OutputMax + 0.5);
+    }
+}
+
+template <typename type , std::size_t size>
+void makeGammaWithRange(float gamma ,type InputMax ,type OutputMax ,std::array<type ,size> & gammaArray){
+    for(int i = 0 ; i < gammaArray.size() ; ++i){
+        gammaArray[i] = (type) (std::pow( (float) gammaArray[i] / (float)InputMax , gamma) * OutputMax + 0.5);
     }
 }
 
@@ -51,18 +58,18 @@ public:
             ,outMax(OutputMaxRange)
             ,gammaVal(gammaValue)
     {
-        makeGammaWithRange(gammaVal,inMax ,outMax ,gammaArray);
+        makeGammaWithRangeAll(gammaVal,inMax ,outMax ,gammaArray);
     }
 
     void setGammaValue(const float gammaValue){
         gammaVal = gammaValue;
-        makeGammaWithRange(gammaVal ,inMax ,outMax ,gammaArray);
+        makeGammaWithRangeAll(gammaVal ,inMax ,outMax ,gammaArray);
     }
 
     void setRange(const type InputMaxRange ,const type OutputMaxRange){
         inMax = InputMaxRange;
         outMax = OutputMaxRange;
-        makeGammaWithRange(gammaVal ,inMax ,outMax ,gammaArray);
+        makeGammaWithRangeAll(gammaVal ,inMax ,outMax ,gammaArray);
     }
 
     type& operator [](const size_t index) {
