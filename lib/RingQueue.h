@@ -1,11 +1,13 @@
 #pragma once
-#define DEFAULT_MAX_SIZE    128
 
-template<typename T>
+#include <cstddef>
+#include <exception>
+
+template<typename T, typename size_type = int>
 class RingQueue
 {
 public:
-    RingQueue(unsigned int size = DEFAULT_MAX_SIZE)
+    RingQueue(size_type size = DEFAULT_MAX_SIZE)
     : size_(size)
     {
         head_ = tail_ = 0;
@@ -47,4 +49,5 @@ private:
     const unsigned int size_;
     T* queue_;
 
+    static constexpr size_type DEFAULT_MAX_SIZE = 128;
 };
