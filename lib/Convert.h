@@ -63,14 +63,14 @@ namespace Convert
     float fromHexToFloat(const String& floatHexString)
     {
         IntFloatUnion<float> myUnion;
-        myUnion.x = toIntegral<same_size_int_t<float>>(floatHexString);
+        myUnion.x = toIntegral<decltype(myUnion.x)>(floatHexString);
         return myUnion.f;
     }
 
     double fromHexToDouble(const String& doubleHexString)
     {
         IntFloatUnion<double> myUnion;
-        myUnion.x = toIntegral<same_size_int_t<double>>(doubleHexString);
+        myUnion.x = toIntegral<decltype(myUnion.x)>(doubleHexString);
         return myUnion.f;
     }
 
