@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <exception>
 
-template<typename T, typename size_type = int>
+template<typename T, typename size_type = unsigned int>
 class RingQueue
 {
 public:
@@ -52,12 +52,12 @@ public:
     inline const T& back() const throw(Exception)
     {
         if(empty()) throw Exception();
-        return *(queue_ + (size_ + tail_ - 1) % size_);
+        return *(queue_ + (tail_ - 1) % size_);
     }
     inline T& back() throw(Exception)
     {
         if(empty()) throw Exception();
-        return *(queue_ + (size_ + tail_ - 1) % size_);
+        return *(queue_ + (tail_ - 1) % size_);
     }
 
     inline const T& operator[] (int index) const
