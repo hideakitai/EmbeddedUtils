@@ -29,7 +29,6 @@ public:
     inline void pop()   { head_++; };
     inline void push(T data)
     {
-        if (size() >= size_) return;
         queue_[(tail_++) % size_] = data;
         else if (size() <  0)     clear();
         if      (size() > size_) head_++;
