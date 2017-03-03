@@ -22,6 +22,7 @@ public:
     };
     ~RingQueue()  { delete[] queue_; };
 
+    inline size_type capacity() const { return size_; };
     inline size_type size() const { return (tail_ - head_); };
     inline bool empty() const { return tail_ == head_; };
     inline void clear() { head_ = 0; tail_ = 0; };
