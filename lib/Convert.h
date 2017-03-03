@@ -39,6 +39,13 @@ namespace Convert
     }
 
 
+    template <typename T>
+    auto toIntegral(const String &intString)
+    -> typename std::enable_if<std::is_integral<T>::value, String>::type
+    {
+        return (T)intString.toInt();
+    }
+
     int fromHexToInt(const String& intHexString) { return (int)strtol(intHexString.c_str(), NULL, 16); }
     int toInt(const String& intString) { return (int)intString.toInt(); }
 
