@@ -31,8 +31,8 @@ public:
     {
         if (size() >= size_) return;
         queue_[(tail_++) % size_] = data;
-        if      (size() >= size_) head_++;
         else if (size() <  0)     clear();
+        if      (size() > size_) head_++;
     };
 
     inline const T& front() const throw(Exception)
