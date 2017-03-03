@@ -5,6 +5,28 @@ namespace Convert
 {
     const char* fromString(const String& value) { return value.c_str(); }
 
+    template <size_t size>
+    struct same_size_int;
+
+    template <size_t size>
+    using same_size_int_t = typename same_size_int<size>::type;
+
+    template <> struct same_size_int<1> { using type = int8_t; };
+    template <> struct same_size_int<2> { using type = int16_t; };
+    template <> struct same_size_int<4> { using type = int32_t; };
+    template <> struct same_size_int<8> { using type = int64_t; };
+
+    template <typename T, typename std::enable_if<std::is_floating_point<T>::value>::type* = nullptr>
+    struct IntFloatUnion_impl {
+        using type = union {
+            same_size_int_t<sizeof(T)> x;
+            T f;
+        };
+    };
+
+    template <typename T>
+    using IntFloatUnion = typename IntFloatUnion_impl<T>::type;
+
     template <typename T, size_t length = sizeof(T) * 2>
     auto toHex(T value)
     -> typename std::enable_if<std::is_integral<T>::value, String>::type
