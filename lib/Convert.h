@@ -38,6 +38,15 @@ namespace Convert
         return String(hex);
     }
 
+    template <typename T, size_t length = sizeof(T) * 2>
+    auto toHex(T value)
+    -> typename std::enable_if<std::is_floating_point<T>::value, String>::type
+    {
+        IntFloatUnion<T> myUnion;
+        myUnion.f = value;
+
+        return toHex(myUnion.x);
+    }
 
     template <typename T>
     auto toIntegral(const String &intString)
