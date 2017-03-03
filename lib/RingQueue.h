@@ -34,19 +34,35 @@ public:
         else if (size() <  0)     clear();
     };
 
-    inline T& front()
+    inline const T& front() const throw(Exception)
     {
-        return *(empty() ? NULL : queue_ + head_ % size_);
+        if(empty()) throw Exception();
+        return *(queue_ + head_ % size_);
+    };
+    inline T& front() throw(Exception)
+    {
+        if(empty()) throw Exception();
+        return *(queue_ + head_ % size_);
     };
 
-    inline T& back()
+    inline const T& back() const throw(Exception)
     {
-        return *(empty() ? NULL : queue_ + (tail_ - 1) % size_);
+        if(empty()) throw Exception();
+        return *(queue_ + (size_ + tail_ - 1) % size_);
+    }
+    inline T& back() throw(Exception)
+    {
+        if(empty()) throw Exception();
+        return *(queue_ + (size_ + tail_ - 1) % size_);
     }
 
+    inline const T& operator[] (int index) const
+    {
+        return *(queue_ + (head_ + index) % size_);
+    }
     inline T& operator[] (int index)
     {
-        return *(empty() ? NULL : queue_ + head_ % size_ + index);
+        return *(queue_ + (head_ + index) % size_);
     }
 
 private:
