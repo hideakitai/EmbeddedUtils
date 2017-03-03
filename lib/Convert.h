@@ -55,9 +55,9 @@ namespace Convert
         return (T)intString.toInt();
     }
 
-    int fromHexToInt(const String& intHexString) { return (int)strtol(intHexString.c_str(), NULL, 16); }
     int toInt(const String& intString) { return (int)intString.toInt(); }
 
+    int fromHexToInt(const String& intHexString) { return (int)strtol(intHexString.c_str(), NULL, 16); }
     char fromHexToChar(const String& charHexString) { return (char)strtol(charHexString.c_str(), NULL, 16); }
 
     float fromHexToFloat(const String& floatHexString)
@@ -66,6 +66,11 @@ namespace Convert
         myUnion.x = toIntegral<same_size_int_t<float>>(floatHexString);
         return myUnion.f;
     }
+
+    double fromHexToDouble(const String& doubleHexString)
+    {
+        IntFloatUnion<double> myUnion;
+        myUnion.x = toIntegral<same_size_int_t<double>>(doubleHexString);
         return myUnion.f;
     }
 
