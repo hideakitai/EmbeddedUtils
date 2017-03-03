@@ -7,6 +7,13 @@ template<typename T, typename size_type = int>
 class RingQueue
 {
 public:
+    struct Exception : public std::exception {
+        Exception() {}
+        virtual const char *what() const noexcept {
+            return "RingQueue is Empty";
+        }
+    };
+
     RingQueue(size_type size = DEFAULT_MAX_SIZE)
     : size_(size)
     {
