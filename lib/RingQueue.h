@@ -15,8 +15,8 @@ public:
     };
     ~RingQueue()  { delete[] queue_; };
 
-    inline int  size()  { return  (tail_ - head_); };
-    inline bool empty() { return !(tail_ - head_); };
+    inline size_type size() const { return (tail_ - head_); };
+    inline bool empty() const { return tail_ == head_; };
     inline void clear() { head_ = 0; tail_ = 0; };
     inline void pop()   { head_++; };
     inline void push(T data)
@@ -44,9 +44,9 @@ public:
 
 private:
 
-    volatile unsigned int head_;
-    volatile unsigned int tail_;
-    const unsigned int size_;
+    volatile size_type head_;
+    volatile size_type tail_;
+    const    size_type size_;
     T* queue_;
 
     static constexpr size_type DEFAULT_MAX_SIZE = 128;
