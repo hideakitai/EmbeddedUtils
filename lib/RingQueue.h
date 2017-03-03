@@ -26,11 +26,15 @@ public:
     inline size_type size() const { return (tail_ - head_); };
     inline bool empty() const { return tail_ == head_; };
     inline void clear() { head_ = 0; tail_ = 0; };
-    inline void pop()   { head_++; };
+    inline void pop()
+    {
+        if (size() == 0) return;
+        if (size() == 1) clear();
+        else head_++;
+    };
     inline void push(T data)
     {
         queue_[(tail_++) % size_] = data;
-        else if (size() <  0)     clear();
         if      (size() > size_) head_++;
     };
 
