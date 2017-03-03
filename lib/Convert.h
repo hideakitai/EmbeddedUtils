@@ -5,27 +5,72 @@ namespace Convert
 {
     const char* fromString(const String& value) { return value.c_str(); }
 
-    template <typename T, typename std::enable_if<std::is_integral<typename std::remove_reference<T>::type>::value>::type* = nullptr>
-    String toHex(const T& value)
+    template <size_t size>
+    struct same_size_int;
+
+    template <size_t size>
+    using same_size_int_t = typename same_size_int<size>::type;
+
+    template <> struct same_size_int<1> { using type = int8_t; };
+    template <> struct same_size_int<2> { using type = int16_t; };
+    template <> struct same_size_int<4> { using type = int32_t; };
+    template <> struct same_size_int<8> { using type = int64_t; };
+
+    template <typename T, typename std::enable_if<std::is_floating_point<T>::value>::type* = nullptr>
+    struct IntFloatUnion_impl {
+        using type = union {
+            same_size_int_t<sizeof(T)> x;
+            T f;
+        };
+    };
+
+    template <typename T>
+    using IntFloatUnion = typename IntFloatUnion_impl<T>::type;
+
+    template <typename T, size_t length = sizeof(T) * 2>
+    auto toHex(T value)
+    -> typename std::enable_if<std::is_integral<T>::value, String>::type
     {
-        size_t size = sizeof(T) * 2;
-        String format = "%0" + String(size) + "X";
-        char hex[size + 1];
+        String format = "%0" + String(length) + "X";
+        char hex[length + 1];
 
         sprintf(hex, format.c_str(), value);
         return String(hex);
     }
 
-    int toInt(const String& intString) { return intString.toInt(); }
+    template <typename T, size_t length = sizeof(T) * 2>
+    auto toHex(T value)
+    -> typename std::enable_if<std::is_floating_point<T>::value, String>::type
+    {
+        IntFloatUnion<T> myUnion;
+        myUnion.f = value;
+
+        return toHex(myUnion.x);
+    }
+
+    template <typename T>
+    auto toIntegral(const String &intString)
+    -> typename std::enable_if<std::is_integral<T>::value, T>::type
+    {
+        return (T)intString.toInt();
+    }
+
+    int toInt(const String& intString) { return (int)intString.toInt(); }
 
     int fromHexToInt(const String& intHexString) { return (int)strtol(intHexString.c_str(), NULL, 16); }
-
     char fromHexToChar(const String& charHexString) { return (char)strtol(charHexString.c_str(), NULL, 16); }
 
     float fromHexToFloat(const String& floatHexString)
     {
-        union intFloatUnion { int x; float f; } myUnion;
-        myUnion.x = toInt(floatHexString);
+        IntFloatUnion<float> myUnion;
+        myUnion.x = toIntegral<decltype(myUnion.x)>(floatHexString);
+        return myUnion.f;
+    }
+
+    double fromHexToDouble(const String& doubleHexString)
+    {
+        IntFloatUnion<double> myUnion;
+        myUnion.x = toIntegral<decltype(myUnion.x)>(doubleHexString);
         return myUnion.f;
     }
 
