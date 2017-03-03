@@ -38,9 +38,9 @@ namespace Convert
         return String(hex);
     }
 
-    int toInt(const String& intString) { return intString.toInt(); }
 
     int fromHexToInt(const String& intHexString) { return (int)strtol(intHexString.c_str(), NULL, 16); }
+    int toInt(const String& intString) { return (int)intString.toInt(); }
 
     char fromHexToChar(const String& charHexString) { return (char)strtol(charHexString.c_str(), NULL, 16); }
 
