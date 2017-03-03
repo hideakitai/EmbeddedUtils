@@ -46,8 +46,10 @@ namespace Convert
 
     float fromHexToFloat(const String& floatHexString)
     {
-        union intFloatUnion { int x; float f; } myUnion;
-        myUnion.x = toInt(floatHexString);
+        IntFloatUnion<float> myUnion;
+        myUnion.x = toIntegral<same_size_int_t<float>>(floatHexString);
+        return myUnion.f;
+    }
         return myUnion.f;
     }
 
