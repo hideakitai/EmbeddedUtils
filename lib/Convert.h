@@ -50,7 +50,7 @@ namespace Convert
 
     template <typename T>
     auto toIntegral(const String &intString)
-    -> typename std::enable_if<std::is_integral<T>::value, String>::type
+    -> typename std::enable_if<std::is_integral<T>::value, T>::type
     {
         return (T)intString.toInt();
     }
