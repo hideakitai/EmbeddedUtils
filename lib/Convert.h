@@ -5,12 +5,12 @@ namespace Convert
 {
     const char* fromString(const String& value) { return value.c_str(); }
 
-    template <typename T, typename std::enable_if<std::is_integral<typename std::remove_reference<T>::type>::value>::type* = nullptr>
-    String toHex(const T& value)
+    template <typename T, size_t length = sizeof(T) * 2>
+    auto toHex(T value)
+    -> typename std::enable_if<std::is_integral<T>::value, String>::type
     {
-        size_t size = sizeof(T) * 2;
-        String format = "%0" + String(size) + "X";
-        char hex[size + 1];
+        String format = "%0" + String(length) + "X";
+        char hex[length + 1];
 
         sprintf(hex, format.c_str(), value);
         return String(hex);
