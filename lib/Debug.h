@@ -3,7 +3,6 @@
 #include <Arduino.h>
 
 #if defined(TEENSYDUINO) || defined(__AVR__) || defined(__MBED__)
-#ifdef NDEBUG
 
 namespace Debug
 {
@@ -11,17 +10,18 @@ namespace Debug
     {
         while (!b)
         {
-            Serial.printf("[Notice] %s:%d:%s() : " s "\n", file, line, func, expr);
+            Serial.printf("[ASSERT] %s:%d:%s() : %s\n", file, line, func, expr);
             // abort();
         }
     }
 }
 
+#ifdef NDEBUG
 #ifndef assert
 #define assert(b) ((void)0)
 #endif
 #define LOG_VERBOSE(s,...) ((void)0)
-#define LOG_NOTICE(s) ((void)0)
+#define LOG_NOTICE(s,...) ((void)0)
 #define LOG_WARNING(s,...) ((void)0)
 #define LOG_ERROR(s,...) ((void)0)
 
