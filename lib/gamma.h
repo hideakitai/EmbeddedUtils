@@ -1,93 +1,49 @@
-//
-//  gammma.h
-//
-//  Created by yutaAsai on 2017/02/06.
-//
-//
+#pragma once
 
-#ifndef gammma_h
-#define gammma_h
 #include <cmath>
 #include <array>
 
-template <typename type , std::size_t size>
-void makeGamma(float gamma ,std::array<type ,size> & gammaArray){
-    uint64_t maxSize = gammaArray.size() - 1;
-    for(int i = 0 ; i < gammaArray.size() ; ++i){
-        gammaArray[i] = (type) (std::pow( (float) i / (float)maxSize , gamma) * maxSize + 0.5);
-    }
-}
-
-template <typename type , std::size_t size>
-void makeGammaWithRangeAll(float gamma ,type InputMax ,type OutputMax ,std::array<type ,size> & gammaArray){
-    for(int i = 0 ; i < gammaArray.size() ; ++i){
-        gammaArray[i] = (type) (std::pow( (float) i / (float)InputMax , gamma) * OutputMax + 0.5);
-    }
-}
-
-template <typename type , std::size_t size>
-void makeGammaWithRange(float gamma ,type InputMax ,type OutputMax ,std::array<type ,size> & gammaArray){
-    for(int i = 0 ; i < gammaArray.size() ; ++i){
-        gammaArray[i] = (type) (std::pow( (float) gammaArray[i] / (float)InputMax , gamma) * OutputMax + 0.5);
-    }
-}
-
-template <typename type , std::size_t arraySize>
-class GammaTable{
+template <typename TYPE , std::size_t SIZE>
+class GammaTable
+{
 public:
-    GammaTable()
-            :inMax(arraySize - 1)
-            ,outMax(arraySize - 1)
-            ,gammaVal(1.0)
+
+    GammaTable(const float gamma, const std::size_t scale = (float)SIZE)
+    : gamma(gamma) , scale(scale)
     {
-        for(uint32_t i  = 0 ; i < gammaArray.size(); ++i){
-            gammaArray[i] = i;
+        create();
+    }
+
+    void setGamma(const float g)
+    {
+        gamma = g;
+        create();
+    }
+
+    void setScale(const float s)
+    {
+        scale = s;
+        create();
+    }
+
+    const TYPE& operator [](const size_t index) const { return gamma_array[index]; }
+    const TYPE& at(const size_t index) const { return gamma_array.at(index); }
+    const std::size_t size() const { return gamma_array.size(); }
+
+    const float getGamma() const { return gamma; }
+    const float getRange() const { return scale; }
+
+private:
+
+    void create()
+    {
+        for(int i = 0 ; i < gamma_array.size() ; ++i)
+        {
+            gamma_array[i] = static_cast<TYPE>(std::pow((float)i / (float)SIZE, gamma) * scale);
         }
     }
 
-    GammaTable(const float gammaValue)
-            :inMax(arraySize - 1)
-            ,outMax(arraySize - 1)
-            ,gammaVal(gammaValue)
-    {
-        makeGammaWithRange(gammaVal(gammaValue) ,inMax ,outMax ,gammaArray);
-    }
-
-    GammaTable(const float gammaValue ,const type InputMaxRange ,const type OutputMaxRange)
-            :inMax(InputMaxRange)
-            ,outMax(OutputMaxRange)
-            ,gammaVal(gammaValue)
-    {
-        makeGammaWithRangeAll(gammaVal,inMax ,outMax ,gammaArray);
-    }
-
-    void setGammaValue(const float gammaValue){
-        gammaVal = gammaValue;
-        makeGammaWithRangeAll(gammaVal ,inMax ,outMax ,gammaArray);
-    }
-
-    void setRange(const type InputMaxRange ,const type OutputMaxRange){
-        inMax = InputMaxRange;
-        outMax = OutputMaxRange;
-        makeGammaWithRangeAll(gammaVal ,inMax ,outMax ,gammaArray);
-    }
-
-    type& operator [](const size_t index) {
-        return gammaArray[index];
-    }
-
-    type& at(const size_t index) {
-        return gammaArray.at(index);
-    }
-
-    std::size_t size() const{
-        return gammaArray.size();
-    }
-
-private:
-    type inMax,outMax;
-    float gammaVal;
-    std::array<type , arraySize> gammaArray;
+    float gamma;
+    float scale;
+    std::array<TYPE, SIZE> gamma_array;
 };
-
-#endif /* gammma_h */
