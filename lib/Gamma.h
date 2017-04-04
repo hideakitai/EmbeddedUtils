@@ -3,12 +3,12 @@
 #include <cmath>
 #include <array>
 
-template <typename TYPE , std::size_t SIZE>
+template <typename TYPE, std::size_t SIZE>
 class GammaTable
 {
 public:
 
-    GammaTable(const float gamma, const std::size_t scale = (float)SIZE)
+    GammaTable(const float gamma, const std::size_t scale = static_cast<float>(SIZE))
     : gamma(gamma), scale(scale)
     {
         create();
@@ -37,9 +37,9 @@ private:
 
     void create()
     {
-        for(int i = 0; i < gamma_array.size(); ++i)
+        for (std::size_t i = 0; i < gamma_array.size(); ++i)
         {
-            gamma_array[i] = static_cast<TYPE>(std::pow((float)i / (float)SIZE, gamma) * scale);
+            gamma_array[i] = static_cast<TYPE>(std::pow(static_cast<float>(i) / static_cast<float>(SIZE), gamma) * scale);
         }
     }
 
