@@ -9,7 +9,7 @@ class GammaTable
 public:
 
     GammaTable(const float gamma, const std::size_t scale = (float)SIZE)
-    : gamma(gamma) , scale(scale)
+    : gamma(gamma), scale(scale)
     {
         create();
     }
@@ -26,8 +26,8 @@ public:
         create();
     }
 
-    const TYPE& operator [](const size_t index) const { return gamma_array[index]; }
-    const TYPE& at(const size_t index) const { return gamma_array.at(index); }
+    const TYPE& operator [](const std::size_t index) const { return gamma_array[index]; }
+    const TYPE& at(const std::size_t index) const { return gamma_array.at(index); }
     const std::size_t size() const { return gamma_array.size(); }
 
     const float getGamma() const { return gamma; }
@@ -37,7 +37,7 @@ private:
 
     void create()
     {
-        for(int i = 0 ; i < gamma_array.size() ; ++i)
+        for(int i = 0; i < gamma_array.size(); ++i)
         {
             gamma_array[i] = static_cast<TYPE>(std::pow((float)i / (float)SIZE, gamma) * scale);
         }
