@@ -11,15 +11,13 @@ namespace Debug
         while (!b)
         {
             Serial.printf("[ASSERT] %s:%d:%s() : %s\n", file, line, func, expr);
-            // abort();
         }
     }
 }
 
 #ifdef NDEBUG
-#ifndef assert
-#define assert(b) ((void)0)
-#endif
+
+#define ASSERT(b) ((void)0)
 #define LOG_VERBOSE(s,...) ((void)0)
 #define LOG_NOTICE(s,...) ((void)0)
 #define LOG_WARNING(s,...) ((void)0)
@@ -27,9 +25,7 @@ namespace Debug
 
 #else // NDEBUG
 
-#ifndef assert
-#define assert(b) Debug::Assert((b), __FILE__, __LINE__, __func__, #b)
-#endif
+#define ASSERT(b) Debug::Assert((b), __FILE__, __LINE__, __func__, #b)
 #define LOG_VERBOSE(s,...) Serial.printf("[Verbose] %s:%d:%s() : " s "\n", __FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #define LOG_NOTICE(s,...) Serial.printf("[Notice] %s:%d:%s() : " s "\n", __FILE__, __LINE__, __func__, ##__VA_ARGS__)
 #define LOG_WARNING(s,...) Serial.printf("[Warning] %s:%d:%s() : " s "\n", __FILE__, __LINE__, __func__, ##__VA_ARGS__)
