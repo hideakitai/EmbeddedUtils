@@ -1,6 +1,5 @@
 #pragma once
 #include <stdarg.h>
-#include <Arduino.h>
 
 #if defined(TEENSYDUINO) || defined(__AVR__) || defined(__MBED__)
 

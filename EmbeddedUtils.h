@@ -1,5 +1,19 @@
 #pragma once
 
+#include <Arduino.h>
+
+#ifdef abs
+#undef abs
+#endif
+
+#ifdef round
+#undef round
+#endif
+
+#ifdef B1
+#undef B1
+#endif
+
 #include "lib/Debug.h"
 #include "lib/Calculus.h"
 #include "lib/Convert.h"

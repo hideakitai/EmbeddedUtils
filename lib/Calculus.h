@@ -18,7 +18,7 @@ namespace Calculus
         }
 
         inline void reset() { buffer_ = T::zero(); }
-        inline void setGain(T gain) { gain_ = gain; }
+        inline void setGain(const T& gain) { gain_ = gain; }
 
     private:
         T gain_;
