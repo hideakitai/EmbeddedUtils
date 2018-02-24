@@ -51,18 +51,6 @@ static void TransMatrix( const float * const A, int m, int n, float * const A_tr
     }
 }
 
-// transpose : A(m × n)
-template <std::size_t m, std::size_t n>
-void TransMatrix( const float (&A)[m][n], int m, int n, float (&A_trans)[n][m] )
-{
-    int i,j;
-    for( i=0; i<m; i++ ){
-        for( j=0; j<n; j++ ){
-            A_trans[j][i] ) = A[i][j];
-        }
-    }
-}
-
 // inverse : A (n x n)
 static void InvMatrix( const float * const A, int n, float * const A_inv )
 {
