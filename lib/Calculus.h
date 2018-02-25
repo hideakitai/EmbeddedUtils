@@ -1,6 +1,7 @@
 #pragma once
 #include <Arduino.h>
 #include "Eigen/Eigen"
+#include "Helper.h"
 
 namespace Calculus
 {
@@ -12,6 +13,7 @@ namespace Calculus
         Differential() { reset(); }
         Differential(T gain) : gain_(gain) { reset(); }
 
+        template <typename U = T, typename std::enable_if<!EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
         inline T get(const T& integral, float dt)
         {
             T newVal;
@@ -20,47 +22,31 @@ namespace Calculus
             return newVal;
         }
 
+        template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
+        inline T get(const T& integral, float dt)
+        {
+            T newVal = integral.array() * gain_.array() - buffer_.array();
+            buffer_ = buffer_.array() + gain_.array() * newVal.array() * dt;
+            return newVal;
+        }
+
+        template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, zero)>::type* = nullptr>
+        inline void reset() { buffer_ = U::zero(); }
+
+        template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, setZero)>::type* = nullptr>
         inline void reset() { buffer_.setZero(); }
+
+        template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
+        inline void reset() { buffer_ = 0.0; }
+
         inline void setGain(const T& gain) { gain_ = gain; }
 
     private:
+
         T gain_;
         T buffer_;
     };
 
-//    template <> inline T Differential<float>::get(const T& integral, float dt)
-//    {
-//        T newVal;
-//        newVal  = integral * gain_ - buffer_;
-//        buffer_ += gain_ * newVal * dt;
-//        return newVal;
-//    }
-//
-//    template <> inline T Differential<double>::get(const T& integral, float dt)
-//    {
-//        T newVal;
-//        newVal  = integral * gain_ - buffer_;
-//        buffer_ += gain_ * newVal * dt;
-//        return newVal;
-//    }
-//
-//    template <> inline T Differential<Vec3f>::get(const T& integral, float dt)
-//    {
-//        T newVal;
-//        newVal  = integral * gain_ - buffer_;
-//        buffer_ += gain_ * newVal * dt;
-//        return newVal;
-//    }
-
-    template <> inline Eigen::Vector3f Differential<Eigen::Vector3f>::get(const Eigen::Vector3f& integral, float dt)
-    {
-        Eigen::Vector3f newVal = integral.array() * gain_.array() - buffer_.array();
-        buffer_ = buffer_.array() + gain_.array() * newVal.array() * dt;
-        return newVal;
-    }
-
-    template <> inline void Differential<float>::reset() { buffer_ = 0.0; }
-    template <> inline void Differential<double>::reset() { buffer_ = 0.0; }
 
     template <typename T>
     class Integral
@@ -69,18 +55,32 @@ namespace Calculus
 
         Integral() { reset(); }
 
+        template <typename U = T, typename std::enable_if<!EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
         inline const T& get(const T& differential, float dt)
         {
             buffer_ += differential * dt;
             return buffer_;
         }
 
+        template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
+        inline const T& get(const T& differential, float dt)
+        {
+            buffer_ = buffer_.array() + differential.array() * dt;
+            return buffer_;
+        }
+
+        template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, zero)>::type* = nullptr>
+        inline void reset() { buffer_ = U::zero(); }
+
+        template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, setZero)>::type* = nullptr>
         inline void reset() { buffer_.setZero(); }
 
+        template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
+        inline void reset() { buffer_ = 0.0; }
+
 private:
+
         T buffer_;
     };
 
-    template <> inline void Integral<float>::reset() { buffer_ = 0.0; }
-    template <> inline void Integral<double>::reset() { buffer_ = 0.0; }
 }
