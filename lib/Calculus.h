@@ -1,6 +1,5 @@
 #pragma once
 #include <Arduino.h>
-#include "Eigen/Eigen"
 #include "Helper.h"
 
 namespace Calculus

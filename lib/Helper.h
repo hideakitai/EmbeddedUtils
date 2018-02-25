@@ -2,6 +2,7 @@
 
 #include <type_traits>
 
+
 #define EMBEDDEDUTILS_DEFINE_MEMBER_CHECKER(member) \
     template<typename Type, typename Value = bool> \
     struct has_ ## member : std::false_type { }; \
