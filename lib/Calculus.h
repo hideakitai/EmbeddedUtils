@@ -4,7 +4,7 @@
 
 namespace Calculus
 {
-    template <typename T, int N = 1>
+    template <typename T, int N>
     class Differential
     {
     public:
@@ -47,7 +47,7 @@ namespace Calculus
     };
 
 
-    template <typename T, int N = 1>
+    template <typename T, int N>
     class Integral
     {
     public:
