@@ -15,8 +15,7 @@ namespace Calculus
         template <typename U = T, typename std::enable_if<!EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
         inline T get(const T& integral, float dt)
         {
-            T newVal;
-            newVal  = integral * gain_ - buffer_;
+            auto newVal = integral * gain_ - buffer_;
             buffer_ += gain_ * newVal * dt;
             return newVal;
         }
@@ -24,7 +23,7 @@ namespace Calculus
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
         inline T get(const T& integral, float dt)
         {
-            T newVal = integral.array() * gain_.array() - buffer_.array();
+            auto newVal = integral.array() * gain_.array() - buffer_.array();
             buffer_ = buffer_.array() + gain_.array() * newVal.array() * dt;
             return newVal;
         }
