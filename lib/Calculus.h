@@ -4,7 +4,7 @@
 
 namespace Calculus
 {
-    template <typename T>
+    template <typename T, int N = 1>
     class Differential
     {
     public:
@@ -33,7 +33,7 @@ namespace Calculus
         inline void reset() { buffer_ = U::zero(); }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, setZero)>::type* = nullptr>
-        inline void reset() { buffer_.setZero(); }
+        inline void reset() { buffer_.setZero(N); }
 
         template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
         inline void reset() { buffer_ = 0.0; }
@@ -47,7 +47,7 @@ namespace Calculus
     };
 
 
-    template <typename T>
+    template <typename T, int N = 1>
     class Integral
     {
     public:
@@ -72,7 +72,7 @@ namespace Calculus
         inline void reset() { buffer_ = U::zero(); }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, setZero)>::type* = nullptr>
-        inline void reset() { buffer_.setZero(); }
+        inline void reset() { buffer_.setZero(N); }
 
         template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
         inline void reset() { buffer_ = 0.0; }

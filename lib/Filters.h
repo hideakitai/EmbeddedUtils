@@ -4,12 +4,12 @@
 
 namespace Filter
 {
-    template <typename T>
+    template <typename T, int N = 1>
     class LPF
     {
     public:
         LPF() { reset(); }
-        LPF(T gain) : gain_(gain), buffer_() {}
+        LPF(T gain) : gain_(gain), buffer_() { reset(); }
 
         template <typename U = T, typename std::enable_if<!EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
         inline T get(const T& curr_val, float dt)
@@ -29,7 +29,7 @@ namespace Filter
         inline void reset() { buffer_ = U::zero(); }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, setZero)>::type* = nullptr>
-        inline void reset() { buffer_.setZero(); }
+        inline void reset() { buffer_.setZero(N); }
 
         template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
         inline void reset() { buffer_ = 0.0; }
@@ -43,10 +43,11 @@ namespace Filter
     };
 
 
-    template <typename T>
+    template <typename T, int N>
     class HPF
     {
-        HPF(T gain) : gain_(gain), buffer_() {}
+        HPF() { reset(); }
+        HPF(T gain) : gain_(gain), buffer_() { reset(); }
 
         template <typename U = T, typename std::enable_if<!EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
         inline T get(const T& curr_val, float dt)
@@ -68,7 +69,7 @@ namespace Filter
         inline void reset() { buffer_ = U::zero(); }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, setZero)>::type* = nullptr>
-        inline void reset() { buffer_.setZero(); }
+        inline void reset() { buffer_.setZero(N); }
 
         template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
         inline void reset() { buffer_ = 0.0; }
