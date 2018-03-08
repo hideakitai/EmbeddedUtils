@@ -1,7 +1,10 @@
 #pragma once
 
+#ifndef __AVR__
 #include <cstddef>
 #include <cmath>
+#endif
+
 #include "Macro.h"
 
 class Vec2f;
@@ -48,11 +51,11 @@ public:
 		return data;
 	}
 
-	float& operator[]( std::size_t n ){
+	float& operator[]( size_t n ){
 		return data[n];
 	}
 
-	float operator[]( std::size_t n ) const {
+	float operator[]( size_t n ) const {
 		return data[n];
 	}
 
@@ -341,10 +344,10 @@ inline bool Vec4f::operator!=( const Vec4f& vec ) const {
 }
 
 inline bool Vec4f::match( const Vec4f& vec, float tolerance) const {
-	return (std::fabs(x - vec.x) < tolerance)
-	&& (std::fabs(y - vec.y) < tolerance)
-	&& (std::fabs(z - vec.z) < tolerance)
-	&& (std::fabs(w - vec.w) < tolerance);
+	return (fabs(x - vec.x) < tolerance)
+	&& (fabs(y - vec.y) < tolerance)
+	&& (fabs(z - vec.z) < tolerance)
+	&& (fabs(w - vec.w) < tolerance);
 }
 
 
@@ -610,7 +613,7 @@ inline Vec4f& Vec4f::average( const Vec4f* points, int num ) {
 // }
 
 inline Vec4f Vec4f::getNormalized() const {
-	float length = std::sqrt(x*x + y*y + z*z + w*w);
+	float length = sqrt(x*x + y*y + z*z + w*w);
 	if( length > 0 ) {
 		return Vec4f( x/length, y/length, z/length, w/length );
 	} else {
@@ -619,7 +622,7 @@ inline Vec4f Vec4f::getNormalized() const {
 }
 
 inline Vec4f& Vec4f::normalize() {
-	float length = std::sqrt(x*x + y*y + z*z + w*w);
+	float length = sqrt(x*x + y*y + z*z + w*w);
 	if( length > 0 ) {
 		x /= length;
 		y /= length;
@@ -642,7 +645,7 @@ inline Vec4f Vec4f::getLimited(float max) const {
     Vec4f limited;
     float lengthSquared = (x*x + y*y + z*z + w*w);
     if( lengthSquared > max*max && lengthSquared > 0 ) {
-        float ratio = max/std::sqrt(lengthSquared);
+        float ratio = max/sqrt(lengthSquared);
         limited.set( x*ratio, y*ratio, z*ratio, w*ratio );
     } else {
         limited.set(x,y,z,w);
@@ -653,7 +656,7 @@ inline Vec4f Vec4f::getLimited(float max) const {
 inline Vec4f& Vec4f::limit(float max) {
     float lengthSquared = (x*x + y*y + z*z + w*w);
     if( lengthSquared > max*max && lengthSquared > 0 ) {
-        float ratio = max/std::sqrt(lengthSquared);
+        float ratio = max/sqrt(lengthSquared);
         x *= ratio;
         y *= ratio;
         z *= ratio;
@@ -668,7 +671,7 @@ inline Vec4f& Vec4f::limit(float max) {
 //
 //
 inline float Vec4f::length() const {
-	return std::sqrt(lengthSquared());
+	return sqrt(lengthSquared());
 }
 
 inline float Vec4f::lengthSquared() const {

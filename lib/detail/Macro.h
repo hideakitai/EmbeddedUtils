@@ -1,7 +1,9 @@
 #pragma once
 
+#ifndef __AVR__
 #include <cstddef>
 #include <math.h>
+#endif
 
 #ifndef PI
    #define PI       3.14159265358979323846

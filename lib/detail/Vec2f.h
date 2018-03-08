@@ -1,7 +1,10 @@
 #pragma once
 
+#ifndef __AVR__
 #include <cstddef>
 #include <cmath>
+#endif
+
 #include "Macro.h"
 
 class Vec3f;
@@ -171,11 +174,11 @@ public:
 	///
 	/// This function can be handy if you want to do the same operation to both x and
 	/// y components, as it means you can just make a for loop that repeats twice.
-	float& operator[]( std::size_t n ){
+	float& operator[]( size_t n ){
 		return data[n];
 	}
 
-	float operator[]( std::size_t n ) const {
+	float operator[]( size_t n ) const {
 		return data[n];
 	}
 
@@ -723,7 +726,7 @@ public:
 	/// \param points The array of Vec2f to avarage over
 	/// \param num specifies the number of Vec2f in the array.
 	/// \returns Vector that is the avarage of the points in the array
-    Vec2f&  average( const Vec2f* points, std::size_t num );
+    Vec2f&  average( const Vec2f* points, size_t num );
 
     /// \}
 
@@ -1032,8 +1035,8 @@ inline bool Vec2f::operator!=( const Vec2f& vec ) const {
 }
 
 inline bool Vec2f::match( const Vec2f& vec, float tolerance ) const {
-	return (std::fabs(x - vec.x) < tolerance)
-	&& (std::fabs(y - vec.y) < tolerance);
+	return (fabs(x - vec.x) < tolerance)
+	&& (fabs(y - vec.y) < tolerance);
 }
 
 //
@@ -1041,14 +1044,14 @@ inline bool Vec2f::match( const Vec2f& vec, float tolerance ) const {
 // Tolerance is specified in degree.
 
 inline bool Vec2f::isAligned( const Vec2f& vec, float tolerance ) const {
-	return  std::fabs( this->angle( vec ) ) < tolerance;
+	return  fabs( this->angle( vec ) ) < tolerance;
 }
 inline bool Vec2f::align( const Vec2f& vec, float tolerance ) const {
     return isAligned( vec, tolerance );
 }
 
 inline bool Vec2f::isAlignedRad( const Vec2f& vec, float tolerance ) const {
-	return  std::fabs( this->angleRad( vec ) ) < tolerance;
+	return  fabs( this->angleRad( vec ) ) < tolerance;
 }
 inline bool Vec2f::alignRad( const Vec2f& vec, float tolerance ) const {
     return isAlignedRad( vec, tolerance );
@@ -1172,7 +1175,7 @@ inline Vec2f& Vec2f::operator/=( const float f ) {
 // }
 
 inline Vec2f Vec2f::getScaled( const float length ) const {
-	float l = std::sqrt(x*x + y*y);
+	float l = sqrt(x*x + y*y);
 	if( l > 0 )
 		return Vec2f( (x/l)*length, (y/l)*length );
 	else
@@ -1184,7 +1187,7 @@ inline Vec2f Vec2f::getScaled( const float length ) const {
 // }
 
 inline Vec2f& Vec2f::scale( const float length ) {
-	float l = std::sqrt(x*x + y*y);
+	float l = sqrt(x*x + y*y);
 	if (l > 0) {
 		x = (x/l)*length;
 		y = (y/l)*length;
@@ -1303,7 +1306,7 @@ inline Vec2f& Vec2f::map( const Vec2f& origin,
 //
 //
 inline float Vec2f::distance( const Vec2f& pnt) const {
-	return std::sqrt(squareDistance(pnt));
+	return sqrt(squareDistance(pnt));
 }
 
 //this method is deprecated in 006 please use squareDistance
@@ -1361,7 +1364,7 @@ inline Vec2f& Vec2f::middle( const Vec2f& pnt ) {
 
 
 
-inline Vec2f& Vec2f::average( const Vec2f* points, std::size_t num ) {
+inline Vec2f& Vec2f::average( const Vec2f* points, size_t num ) {
 	if (0 == num) {
 		return *this;
 	}
@@ -1386,7 +1389,7 @@ inline Vec2f& Vec2f::average( const Vec2f* points, std::size_t num ) {
 // }
 
 inline Vec2f Vec2f::getNormalized() const {
-	float length = std::sqrt(x*x + y*y);
+	float length = sqrt(x*x + y*y);
 	if( length > 0 ) {
 		return Vec2f( x/length, y/length );
 	} else {
@@ -1395,7 +1398,7 @@ inline Vec2f Vec2f::getNormalized() const {
 }
 
 inline Vec2f& Vec2f::normalize() {
-	float length = std::sqrt(x*x + y*y);
+	float length = sqrt(x*x + y*y);
 	if( length > 0 ) {
 		x /= length;
 		y /= length;
@@ -1416,7 +1419,7 @@ inline Vec2f Vec2f::getLimited(float max) const {
     Vec2f limited;
     float lengthSquared = (x*x + y*y);
     if( lengthSquared > max*max && lengthSquared > 0 ) {
-        float ratio = max/std::sqrt(lengthSquared);
+        float ratio = max/sqrt(lengthSquared);
         limited.set( x*ratio, y*ratio);
     } else {
         limited.set(x,y);
@@ -1427,7 +1430,7 @@ inline Vec2f Vec2f::getLimited(float max) const {
 inline Vec2f& Vec2f::limit(float max) {
     float lengthSquared = (x*x + y*y);
     if( lengthSquared > max*max && lengthSquared > 0 ) {
-        float ratio = max/std::sqrt(lengthSquared);
+        float ratio = max/sqrt(lengthSquared);
         x *= ratio;
         y *= ratio;
     }
@@ -1444,7 +1447,7 @@ inline Vec2f& Vec2f::limit(float max) {
 // }
 
 inline Vec2f Vec2f::getPerpendicular() const {
-	float length = std::sqrt( x*x + y*y );
+	float length = sqrt( x*x + y*y );
 	if( length > 0 )
 		return Vec2f( -(y/length), x/length );
 	else
@@ -1452,7 +1455,7 @@ inline Vec2f Vec2f::getPerpendicular() const {
 }
 
 inline Vec2f& Vec2f::perpendicular() {
-	float length = std::sqrt( x*x + y*y );
+	float length = sqrt( x*x + y*y );
 	if( length > 0 ) {
 		float _x = x;
 		x = -(y/length);
@@ -1466,7 +1469,7 @@ inline Vec2f& Vec2f::perpendicular() {
 //
 //
 inline float Vec2f::length() const {
-	return std::sqrt( x*x + y*y );
+	return sqrt( x*x + y*y );
 }
 
 inline float Vec2f::lengthSquared() const {
@@ -1475,11 +1478,11 @@ inline float Vec2f::lengthSquared() const {
 
 
 inline float Vec2f::angle( const Vec2f& vec ) const {
-	return std::atan2( x*vec.y-y*vec.x, x*vec.x + y*vec.y )*RAD_TO_DEG;
+	return atan2( x*vec.y-y*vec.x, x*vec.x + y*vec.y )*RAD_TO_DEG;
 }
 
 inline float Vec2f::angleRad( const Vec2f& vec ) const {
-	return std::atan2( x*vec.y-y*vec.x, x*vec.x + y*vec.y );
+	return atan2( x*vec.y-y*vec.x, x*vec.x + y*vec.y );
 }
 
 

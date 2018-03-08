@@ -1,5 +1,5 @@
 #pragma once
-#include <Arduino.h>
+
 #include "Helper.h"
 
 namespace Calculus
@@ -76,9 +76,8 @@ namespace Calculus
         template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
         inline void reset() { buffer_ = 0.0; }
 
-private:
+    private:
 
         T buffer_;
     };
-
 }
