@@ -67,4 +67,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-
+.gitmodules
