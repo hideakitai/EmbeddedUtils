@@ -11,7 +11,7 @@ integral, differential
 
 ### Convert
 
-string <-> value conversion (WIP, port [a part of ofUtils](http://openframeworks.cc/documentation/utils/ofUtils/))
+string <-> value conversion (port [a part of ofUtils](http://openframeworks.cc/documentation/utils/ofUtils/))
 
 
 ### Debug
@@ -26,8 +26,8 @@ some simple filter (LPF, HPF etc.)
 
 ### MatrixFunc.h
 
-matrix manipulation for m x n matrices
-
+matrix manipulation for m x n matrices  
+-> use [ArduinoEigen](https://github.com/hideakitai/ArduinoEigen) except for AVRs 
 
 ### Vec
 
