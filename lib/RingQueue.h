@@ -54,12 +54,12 @@ public:
     inline const value_type_ref back() const throw(Exception)
     {
         if(empty()) throw Exception();
-        return *(queue_ + (tail_ - 1) % size_);
+        return *(queue_ + (size_ + tail_ - 1) % size_);
     }
     inline value_type_ref back() throw(Exception)
     {
         if(empty()) throw Exception();
-        return *(queue_ + (tail_ - 1) % size_);
+        return *(queue_ + (size_ + tail_ - 1) % size_);
     }
 
     inline const value_type_ref operator[] (size_type index) const
