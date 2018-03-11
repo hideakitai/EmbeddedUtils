@@ -1,13 +1,17 @@
 #pragma once
 
+#ifndef RINGQUEUE_H
+#define RINGQUEUE_H
+
 #include <cstddef>
 #include <exception>
 #include <type_traits>
 
-template<typename T, typename size_type = unsigned int>
+template<typename T, typename size_type = uint32_t>
 class RingQueue
 {
     using value_type_ref = typename std::conditional<std::is_arithmetic<T>::value, T, T &>::type;
+
 public:
     struct Exception : public std::exception {
         Exception() {}
@@ -16,7 +20,7 @@ public:
         }
     };
 
-    RingQueue(size_type size = DEFAULT_MAX_SIZE)
+    RingQueue(size_type size)
     : size_(size)
     {
         head_ = tail_ = 0;
@@ -77,6 +81,6 @@ private:
     volatile size_type tail_;
     const    size_type size_;
     T* queue_;
-
-    static constexpr size_type DEFAULT_MAX_SIZE = 128;
 };
+
+#endif
