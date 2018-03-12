@@ -1,16 +1,19 @@
 #pragma once
+#ifndef EMBEDDEDUTILS_H
+#define EMBEDDEDUTILS_H
 
 #include <Arduino.h>
 
 #ifdef abs
+#define abs_tmp abs
 #undef abs
 #endif
-
 #ifdef round
+#define round_tmp round
 #undef round
 #endif
-
 #ifdef B1
+#define B1_tmp B1
 #undef B1
 #endif
 
@@ -34,3 +37,18 @@
 #include "lib/Vec.h"
 #include "lib/avr/Gamma.h"
 #endif
+
+#ifdef abs_tmp
+#define abs abs_tmp
+#undef abs_tmp
+#endif
+#ifdef round_tmp
+#define round round_tmp
+#undef round_tmp
+#endif
+#ifdef B1_tmp
+#define B1 B1_tmp
+#undef B1_tmp
+#endif
+
+#endif // EMBEDDEDUTILS_H
