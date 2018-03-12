@@ -10,8 +10,6 @@
 template<typename T, typename size_type = uint32_t>
 class RingQueue
 {
-    using value_type_ref = typename std::conditional<std::is_arithmetic<T>::value, T, T &>::type;
-
 public:
     struct Exception : public std::exception {
         Exception() {}
@@ -38,39 +36,39 @@ public:
         if (size() == 1) clear();
         else head_++;
     };
-    inline void push(const value_type_ref data)
+    inline void push(const T& data)
     {
         queue_[(tail_++) % size_] = data;
         if      (size() > size_) head_++;
     };
 
-    inline const value_type_ref front() const throw(Exception)
+    inline const T& front() const throw(Exception)
     {
         if(empty()) throw Exception();
         return *(queue_ + head_ % size_);
     };
-    inline value_type_ref front() throw(Exception)
+    inline T front() throw(Exception)
     {
         if(empty()) throw Exception();
         return *(queue_ + head_ % size_);
     };
 
-    inline const value_type_ref back() const throw(Exception)
+    inline const T& back() const throw(Exception)
     {
         if(empty()) throw Exception();
         return *(queue_ + (size_ + tail_ - 1) % size_);
     }
-    inline value_type_ref back() throw(Exception)
+    inline T back() throw(Exception)
     {
         if(empty()) throw Exception();
         return *(queue_ + (size_ + tail_ - 1) % size_);
     }
 
-    inline const value_type_ref operator[] (size_type index) const
+    inline const T& operator[] (const size_type index) const
     {
         return *(queue_ + (head_ + index) % size_);
     }
-    inline value_type_ref operator[] (size_type index)
+    inline T operator[] (const size_type index)
     {
         return *(queue_ + (head_ + index) % size_);
     }
