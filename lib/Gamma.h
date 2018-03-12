@@ -1,4 +1,6 @@
 #pragma once
+#ifndef EMBEDDEDUTILS_GAMMA_H
+#define EMBEDDEDUTILS_GAMMA_H
 
 #include <cmath>
 #include <array>
@@ -47,3 +49,5 @@ private:
     float scale;
     std::array<TYPE, SIZE> gamma_array;
 };
+
+#endif // EMBEDDEDUTILS_GAMMA_H

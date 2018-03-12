@@ -1,4 +1,6 @@
 #pragma once
+#ifndef EMBEDDEDUTILS_CALCULUS_H
+#define EMBEDDEDUTILS_CALCULUS_H
 
 #include "Helper.h"
 
@@ -81,3 +83,5 @@ namespace Calculus
         T buffer_;
     };
 }
+
+#endif // EMBEDDEDUTILS_CALCULUS_H

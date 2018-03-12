@@ -1,5 +1,6 @@
 #pragma once
-
+#ifndef EMBEDDEDUTILS_MATRIX_FUNC_H
+#define EMBEDDEDUTILS_MATRIX_FUNC_H
 
 namespace MatrixFunc
 {
@@ -228,3 +229,5 @@ void WPInvMatrix( const float (&A)[m][n], const float (&W)[n][l], float (&A_wp)[
 
 }
 }
+
+#endif // EMBEDDEDUTILS_MATRIX_FUNC_H

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef EMBEDDEDUTILS_GAMMA_H
+#define EMBEDDEDUTILS_GAMMA_H
 
 template <typename TYPE, size_t SIZE>
 class GammaTable
@@ -43,3 +45,5 @@ private:
     float scale;
     RingQueue<TYPE> gamma_array {size};
 };
+
+#endif // EMBEDDEDUTILS_GAMMA_H

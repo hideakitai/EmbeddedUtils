@@ -1,4 +1,6 @@
 #pragma once
+#ifndef EMBEDDEDUTILS_FILTERS_H
+#define EMBEDDEDUTILS_FILTERS_H
 
 #include "Helper.h"
 
@@ -88,3 +90,5 @@ namespace Filter
 //
 //    };
 }
+
+#endif // EMBEDDEDUTILS_FILTERS_H

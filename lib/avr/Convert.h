@@ -1,4 +1,6 @@
 #pragma once
+#ifndef EMBEDDEDUTILS_CONVERT_H
+#define EMBEDDEDUTILS_CONVERT_H
 
 namespace Convert
 {
@@ -158,3 +160,5 @@ namespace Convert
 //     uint8_to_hex(num, s, upper);
 //     return String(s);
 // }
+
+#endif // EMBEDDEDUTILS_CALCULUS_H

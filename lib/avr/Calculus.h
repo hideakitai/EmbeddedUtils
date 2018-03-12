@@ -1,4 +1,6 @@
 #pragma once
+#ifndef EMBEDDEDUTILS_CALCULUS_H
+#define EMBEDDEDUTILS_CALCULUS_H
 
 namespace Calculus
 {
@@ -48,3 +50,5 @@ namespace Calculus
     template <> inline void Integral<float>::reset() { buffer_ = 0.0; }
     template <> inline void Integral<double>::reset() { buffer_ = 0.0; }
 }
+
+#endif // EMBEDDEDUTILS_CALCULUS_H

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef EMBEDDEDUTILS_HELPER_H
+#define EMBEDDEDUTILS_HELPER_H
 
 #include <type_traits>
 
@@ -47,3 +49,4 @@ namespace Filter
     EMBEDDEDUTILS_DEFINE_FUNCTION_CHECKER(array)
 }
 
+#endif // EMBEDDEDUTILS_HELPER_H

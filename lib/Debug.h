@@ -1,4 +1,7 @@
 #pragma once
+#ifndef EMBEDDEDUTILS_DEBUG_H
+#define EMBEDDEDUTILS_DEBUG_H
+
 #include <stdarg.h>
 
 #if defined(TEENSYDUINO) || defined(__AVR__) || defined(__MBED__)
@@ -32,3 +35,5 @@ namespace Debug
 
 #endif // #ifdef NDEBUG
 #endif // #if defined(TEENSYDUINO) || defined(__AVR__) || defined(__MBED__)
+
+#endif // EMBEDDEDUTILS_DEBUG_H

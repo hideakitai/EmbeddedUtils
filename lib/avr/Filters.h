@@ -1,4 +1,6 @@
 #pragma once
+#ifndef EMBEDDEDUTILS_FILTERS_H
+#define EMBEDDEDUTILS_FILTERS_H
 
 namespace Filter
 {
@@ -57,3 +59,5 @@ namespace Filter
 //    };
 
 }
+
+#endif // EMBEDDEDUTILS_FILTERS_H
