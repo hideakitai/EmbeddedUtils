@@ -2,8 +2,6 @@
 #ifndef EMBEDDEDUTILS_H
 #define EMBEDDEDUTILS_H
 
-#include <Arduino.h>
-
 #ifdef abs
 #define abs_tmp abs
 #undef abs
@@ -28,6 +26,7 @@
 #include "lib/Vec.h"
 #include "lib/Gamma.h"
 #else
+#include <Arduino.h>
 #include "lib/avr/Debug.h"
 #include "lib/avr/Calculus.h"
 #include "lib/avr/Convert.h"
