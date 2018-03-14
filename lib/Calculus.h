@@ -70,13 +70,13 @@ namespace Calculus
         }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, zero)>::type* = nullptr>
-        inline void reset() { buffer_ = U::zero(); }
+        inline void reset(const U& u = U::zero()) { buffer_ = u; }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, setZero)>::type* = nullptr>
-        inline void reset() { buffer_.setZero(N); }
+        inline void reset(const U& u = U::Zero(N)) { buffer_ = u; }
 
         template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
-        inline void reset() { buffer_ = 0.0; }
+        inline void reset(const U& u = 0.0) { buffer_ = u; }
 
     private:
 
