@@ -11,7 +11,6 @@ namespace Calculus
     {
     public:
 
-        Differential() { reset(); }
         Differential(T gain) : gain_(gain) { reset(); }
 
         template <typename U = T, typename std::enable_if<!EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
@@ -31,13 +30,13 @@ namespace Calculus
         }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, zero)>::type* = nullptr>
-        inline void reset() { buffer_ = U::zero(); }
+        inline void reset(const U& integral = U::zero()) { buffer_ = integral * gain_; }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, setZero)>::type* = nullptr>
-        inline void reset() { buffer_.setZero(N); }
+        inline void reset(const U& integral = U::Zero(N)) { buffer_ = integral.array() * gain_.array(); }
 
         template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
-        inline void reset() { buffer_ = 0.0; }
+        inline void reset(const U& integral = 0.0) { buffer_ = integral * gain_; }
 
         inline void setGain(const T& gain) { gain_ = gain; }
 
@@ -70,13 +69,13 @@ namespace Calculus
         }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, zero)>::type* = nullptr>
-        inline void reset(const U& u = U::zero()) { buffer_ = u; }
+        inline void reset(const U& integral = U::zero()) { buffer_ = integral; }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, setZero)>::type* = nullptr>
-        inline void reset(const U& u = U::Zero(N)) { buffer_ = u; }
+        inline void reset(const U& integral = U::Zero(N)) { buffer_ = integral; }
 
         template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
-        inline void reset(const U& u = 0.0) { buffer_ = u; }
+        inline void reset(const U& integral = 0.0) { buffer_ = integral; }
 
     private:
 
