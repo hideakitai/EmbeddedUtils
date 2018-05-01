@@ -4,7 +4,7 @@
 
 #include <stdarg.h>
 
-#if defined(TEENSYDUINO) || defined(__AVR__) || defined(__MBED__)
+#if defined(TEENSYDUINO) || defined(__AVR__) || defined(__MBED__) || defined (ESP_PLATFORM) || defined (ESP8266)
 
 namespace Debug
 {
@@ -34,6 +34,6 @@ namespace Debug
 #define LOG_ERROR(s,...) Serial.printf("[Error] %s:%d:%s() : " s "\n", __FILE__, __LINE__, __func__, ##__VA_ARGS__)
 
 #endif // #ifdef NDEBUG
-#endif // #if defined(TEENSYDUINO) || defined(__AVR__) || defined(__MBED__)
+#endif // #if defined(TEENSYDUINO) || defined(__AVR__) || defined(__MBED__) || defined (ESP_PLATFORM) || defined (ESP8266)
 
 #endif // EMBEDDEDUTILS_DEBUG_H
