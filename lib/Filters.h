@@ -14,14 +14,14 @@ namespace Filter
         LPF(T gain) : gain_(gain), buffer_() { reset(); }
 
         template <typename U = T, typename std::enable_if<!EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
-        inline T get(const T& curr_val, float dt)
+        inline T get(const T& curr_val, double dt)
         {
             buffer_ = curr_val + (curr_val - buffer_) * gain_ * (double)dt;
             return buffer_;
         }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
-        inline T get(const T& curr_val, float dt)
+        inline T get(const T& curr_val, double dt)
         {
             buffer_ = curr_val.array() + (curr_val.array() - buffer_.array()) * gain_.array() * (double)dt;
             return buffer_;
@@ -52,7 +52,7 @@ namespace Filter
         HPF(T gain) : gain_(gain), buffer_() { reset(); }
 
         template <typename U = T, typename std::enable_if<!EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
-        inline T get(const T& curr_val, float dt)
+        inline T get(const T& curr_val, double dt)
         {
             T new_val = curr_val - buffer_;
             buffer_ += new_val * gain_ * dt;
@@ -60,7 +60,7 @@ namespace Filter
         }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
-        inline T get(const T& curr_val, float dt)
+        inline T get(const T& curr_val, double dt)
         {
             T new_val = curr_val.array() - buffer_.array();
             buffer_ += new_val.array() * gain_.array() * dt;
@@ -76,7 +76,7 @@ namespace Filter
         template <typename U = T, typename std::enable_if<std::is_floating_point<U>::value>::type* = nullptr>
         inline void reset() { buffer_ = 0.0; }
 
-        inline void setGain(float gain) { gain_ = gain; }
+        inline void setGain(double gain) { gain_ = gain; }
 
     private:
         T gain_;

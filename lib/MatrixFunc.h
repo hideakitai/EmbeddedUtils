@@ -6,7 +6,7 @@ namespace MatrixFunc
 {
 
 // C(m x l) = A(m × n) x B(n × l)
-void MultiMatrix( const float * const A, const float * const B, int m, int n, int l, float * const C )
+void MultiMatrix( const double * const A, const double * const B, int m, int n, int l, double * const C )
 {
     int i, j, k;
 
@@ -22,7 +22,7 @@ void MultiMatrix( const float * const A, const float * const B, int m, int n, in
 
 // C(m x l) = A(m × n) x B(n × l)
 template <size_t m, size_t n, size_t l>
-void MultiMatrix( const float (&A)[m][n], const float (&B)[n][l], float (&C)[m][l] )
+void MultiMatrix( const double (&A)[m][n], const double (&B)[n][l], double (&C)[m][l] )
 {
     int i, j, k;
 
@@ -37,7 +37,7 @@ void MultiMatrix( const float (&A)[m][n], const float (&B)[n][l], float (&C)[m][
 }
 
 // cross product : X(3 x 1) = A(3×1) [cross] B(3×1)
-void CrossMatrix( const float (&A)[3], const float (&B)[3], float (&X)[3] )
+void CrossMatrix( const double (&A)[3], const double (&B)[3], double (&X)[3] )
 {
     X[0] = A[1]*B[2] - A[2]*B[1];
     X[1] = A[2]*B[0] - A[0]*B[2];
@@ -46,7 +46,7 @@ void CrossMatrix( const float (&A)[3], const float (&B)[3], float (&X)[3] )
 
 
 // transpose : A(m × n)
-void TransMatrix( const float * const A, int m, int n, float * const A_trans )
+void TransMatrix( const double * const A, int m, int n, double * const A_trans )
 {
     int i,j;
     for( i=0; i<m; i++ ){
@@ -57,10 +57,10 @@ void TransMatrix( const float * const A, int m, int n, float * const A_trans )
 }
 
 // inverse : A (n x n)
-void InvMatrix( const float * const A, int n, float * const A_inv )
+void InvMatrix( const double * const A, int n, double * const A_inv )
 {
     int i, j, k;
-    float L[n][n], U[n][n], buf[n][n];
+    double L[n][n], U[n][n], buf[n][n];
 
     // initialize
     for( i=0; i<n; i++ ){
@@ -104,10 +104,10 @@ void InvMatrix( const float * const A, int n, float * const A_inv )
 }
 
 template <size_t n>
-void InvMatrix( const float (&A)[n][n], float (&A_inv)[n][n] )
+void InvMatrix( const double (&A)[n][n], double (&A_inv)[n][n] )
 {
     int i, j, k;
-    float L[n][n], U[n][n], buf[n][n];
+    double L[n][n], U[n][n], buf[n][n];
 
     // initialize
     for( i=0; i<n; i++ ){
@@ -152,12 +152,12 @@ void InvMatrix( const float (&A)[n][n], float (&A_inv)[n][n] )
 
 
 // pseudo inverse : A (m x n)
-void PInvMatrix( const float * const A, int m, int n, float * const A_pseudo )
+void PInvMatrix( const double * const A, int m, int n, double * const A_pseudo )
 {
     int k;
     if( m < n ) k = m;
     else        k = n;
-    float A_trans[n][m], AA_trans[k][k], AA_inv[k][k];
+    double A_trans[n][m], AA_trans[k][k], AA_inv[k][k];
 
     TransMatrix( A, m, n, *A_trans );
     if( m < n ){ // rank = m : A+ = A_trans*(A*A_trans)_inv
@@ -173,9 +173,9 @@ void PInvMatrix( const float * const A, int m, int n, float * const A_pseudo )
 
 // pseudo inverse : A (m x n)
 template <size_t m, size_t n, size_t k = m < n ? m : n>
-void PInvMatrix( const float (&A)[m][n], float (&A_pseudo)[n][m] )
+void PInvMatrix( const double (&A)[m][n], double (&A_pseudo)[n][m] )
 {
-    float A_trans[n][m], AA_trans[k][k], AA_inv[k][k];
+    double A_trans[n][m], AA_trans[k][k], AA_inv[k][k];
 
     TransMatrix( A, m, n, *A_trans );
     if( m < n ){ // rank = m : A+ = A_trans*(A*A_trans)_inv
@@ -191,10 +191,10 @@ void PInvMatrix( const float (&A)[m][n], float (&A_pseudo)[n][m] )
 
 
 // weighted pseudo inverse : A(m x n) & W(n x l)
-void WPInvMatrix( const float * const A, const float * const W, int m, int n, int l, float * const A_wp )
+void WPInvMatrix( const double * const A, const double * const W, int m, int n, int l, double * const A_wp )
 {
-    float A_trans[n][m], W_inv[l][l];
-    float AW[m][l], AWA[m][m], AWA_inv[m][m], WA[l][m];
+    double A_trans[n][m], W_inv[l][l];
+    double AW[m][l], AWA[m][m], AWA_inv[m][m], WA[l][m];
 
     TransMatrix( A, m, n, *A_trans );
     InvMatrix( W, l, *W_inv );
@@ -211,10 +211,10 @@ void WPInvMatrix( const float * const A, const float * const W, int m, int n, in
 
 // weighted pseudo inverse : A(m x n) & W(n x l)
 template <size_t m, size_t n, size_t l>
-void WPInvMatrix( const float (&A)[m][n], const float (&W)[n][l], float (&A_wp)[l][m] )
+void WPInvMatrix( const double (&A)[m][n], const double (&W)[n][l], double (&A_wp)[l][m] )
 {
-    float A_trans[n][m], W_inv[l][l];
-    float AW[m][l], AWA[m][m], AWA_inv[m][m], WA[l][m];
+    double A_trans[n][m], W_inv[l][l];
+    double AW[m][l], AWA[m][m], AWA_inv[m][m], WA[l][m];
 
     TransMatrix( A, A_trans );
     InvMatrix( W, W_inv );

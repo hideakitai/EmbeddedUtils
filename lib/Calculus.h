@@ -14,7 +14,7 @@ namespace Calculus
         Differential(T gain) : gain_(gain) { reset(); }
 
         template <typename U = T, typename std::enable_if<!EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
-        inline T get(const T& integral, float dt)
+        inline T get(const T& integral, double dt)
         {
             auto newVal = integral * gain_ - buffer_;
             buffer_ += gain_ * newVal * dt;
@@ -22,10 +22,10 @@ namespace Calculus
         }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
-        inline T get(const T& integral, float dt)
+        inline T get(const T& integral, double dt)
         {
             auto newVal = integral.array() * gain_.array() - buffer_.array();
-            buffer_ = buffer_.array() + gain_.array() * newVal.array() * dt;
+            buffer_.array() = buffer_.array() + gain_.array() * newVal.array() * dt;
             return newVal;
         }
 
@@ -55,14 +55,14 @@ namespace Calculus
         Integral() { reset(); }
 
         template <typename U = T, typename std::enable_if<!EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
-        inline const T& get(const T& differential, float dt)
+        inline const T& get(const T& differential, double dt)
         {
             buffer_ += differential * dt;
             return buffer_;
         }
 
         template <typename U = T, typename std::enable_if<EMBEDDEDUTILS_HAS_FUNCTION(U, array)>::type* = nullptr>
-        inline const T& get(const T& differential, float dt)
+        inline const T& get(const T& differential, double dt)
         {
             buffer_ = buffer_.array() + differential.array() * dt;
             return buffer_;
