@@ -94,6 +94,43 @@ namespace Convert
         return *c;
     }
 
+#ifndef __AVR__
+
+    void splitString(const String& s, const String& delim, std::vector<String>& result)
+    {
+        result.clear();
+
+        std::vector<size_t> pos;
+        std::vector<size_t> length;
+        pos.emplace_back(0);
+        for (size_t i = 0; i < s.length(); ++i)
+        {
+            if (s.charAt(i) == *(delim.c_str()))
+            {
+                pos.emplace_back(i + 1);
+                length.emplace_back(pos[pos.size() - 1] - pos[pos.size() - 2]);
+            }
+            else if (s.charAt(i) == '\r')
+            {
+                pos.emplace_back(i + 1);
+                length.emplace_back(pos[pos.size() - 1] - pos[pos.size() - 2]);
+                break;
+            }
+            else if (s.charAt(i) == '\n')
+            {
+                pos.emplace_back(i);
+                length.emplace_back(pos[pos.size() - 1] - pos[pos.size() - 2]);
+                break;
+            }
+        }
+        for (size_t i = 0; i < pos.size() - 1; ++i)
+        {
+            result.push_back(s.substring(pos[i], pos[i + 1] - 1));
+        }
+    }
+
+#endif
+
 //    String toBinary(const String& value)
 //    {
 //        String out("");
