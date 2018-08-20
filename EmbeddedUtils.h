@@ -25,6 +25,7 @@
 #include "lib/RingQueue.h"
 #include "lib/Vec.h"
 #include "lib/Gamma.h"
+#include "lib/I2CHelper.h"
 #else
 #include <Arduino.h>
 #include "lib/avr/Debug.h"
@@ -35,6 +36,7 @@
 #include "lib/avr/RingQueue.h"
 #include "lib/Vec.h"
 #include "lib/avr/Gamma.h"
+#include "lib/I2CHelper.h"
 #endif
 
 #ifdef abs_tmp
