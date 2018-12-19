@@ -7,7 +7,7 @@
 #include <exception>
 #include <type_traits>
 
-template<typename T, typename size_type = uint32_t>
+template<typename T, size_t QUEUE_SIZE, typename size_type = uint32_t>
 class RingQueue
 {
 public:
@@ -17,14 +17,6 @@ public:
             return "RingQueue is Empty";
         }
     };
-
-    RingQueue(size_type size)
-    : size_(size)
-    {
-        head_ = tail_ = 0;
-        queue_ = new T[size_];
-    };
-    ~RingQueue()  { delete[] queue_; };
 
     inline size_type capacity() const { return size_; };
     inline size_type size() const { return (tail_ - head_); };
@@ -38,47 +30,46 @@ public:
     };
     inline void push(const T& data)
     {
-        queue_[(tail_++) % size_] = data;
-        if      (size() > size_) head_++;
+        queue_[(tail_++) % QUEUE_SIZE] = data;
+        if      (size() > QUEUE_SIZE) head_++;
     };
 
     inline const T& front() const throw(Exception)
     {
         if(empty()) throw Exception();
-        return *(queue_ + head_ % size_);
+        return *(queue_ + head_ % QUEUE_SIZE);
     };
     inline T front() throw(Exception)
     {
         if(empty()) throw Exception();
-        return *(queue_ + head_ % size_);
+        return *(queue_ + head_ % QUEUE_SIZE);
     };
 
     inline const T& back() const throw(Exception)
     {
         if(empty()) throw Exception();
-        return *(queue_ + (size_ + tail_ - 1) % size_);
+        return *(queue_ + (QUEUE_SIZE + tail_ - 1) % QUEUE_SIZE);
     }
     inline T back() throw(Exception)
     {
         if(empty()) throw Exception();
-        return *(queue_ + (size_ + tail_ - 1) % size_);
+        return *(queue_ + (QUEUE_SIZE + tail_ - 1) % QUEUE_SIZE);
     }
 
     inline const T& operator[] (const size_type index) const
     {
-        return *(queue_ + (head_ + index) % size_);
+        return *(queue_ + (head_ + index) % QUEUE_SIZE);
     }
     inline T operator[] (const size_type index)
     {
-        return *(queue_ + (head_ + index) % size_);
+        return *(queue_ + (head_ + index) % QUEUE_SIZE);
     }
 
 private:
 
-    volatile size_type head_;
-    volatile size_type tail_;
-    const    size_type size_;
-    T* queue_;
+    volatile size_type head_ {0};
+    volatile size_type tail_ {0};
+    T queue_[QUEUE_SIZE];
 };
 
 #endif
