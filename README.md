@@ -1,6 +1,20 @@
 # EmbeddedUtils
 collections of utility headers for embedded c++
 
+# NOTE
+
+This repository is deprecated.
+If you want replacement of this repository, see below.
+
+- [Convert](https://github.com/hideakitai/Convert)
+- [CRC](https://github.com/hideakitai/CRC)
+- [Debug](https://github.com/hideakitai/Debug)
+- [Filters](https://github.com/hideakitai/Filters)
+- [GammaTable](https://github.com/hideakitai/GammaTable)
+- [I2CExtension](https://github.com/hideakitai/I2CExtension)
+- [RingBuffer](https://github.com/hideakitai/RingBuffer)
+- [VectorXf](https://github.com/hideakitai/VectorXf)
+
 
 ## Overview
 
